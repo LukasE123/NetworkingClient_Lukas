@@ -1,5 +1,4 @@
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -22,8 +21,26 @@ public class Main {
 
                 OutputStream clientOut = client.getOutputStream();
                 PrintWriter pw = new PrintWriter(clientOut, true);
-                
 
+                InputStream clientIn = client.getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(clientIn));
+
+                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+
+                System.out.println("Type your name. Type bye to exit. ");
+
+                msg = stdIn.readLine().trim();
+                pw.println(msg);
+
+                System.out.println("Message returned from the server = " + br.readLine());
+
+                pw.close();
+                br.close();
+                client.close();
+
+                if (msg.equalsIgnoreCase("Bye")) {
+                    break;
+                }
             } catch (Exception e) {
                 System.out.println("I/O error " + e);
             }
